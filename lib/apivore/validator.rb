@@ -19,14 +19,18 @@ module Apivore
       pre_checks(swagger_checker)
 
       unless has_errors?
-        send(
-          method,
-          *RailsShim.action_dispatch_request_args(
-            full_path(swagger_checker),
-            params: params['_data'] || {},
-            headers: params['_headers'] || {}
-          )
-        )
+        send(method, full_path(swagger_checker), **{
+          params: params['_data'] || {},
+          headers: params['_headers'] || {}
+        })
+        # send(
+        #   method,
+        #   *RailsShim.action_dispatch_request_args(
+        #     full_path(swagger_checker),
+        #     params: params['_data'] || {},
+        #     headers: params['_headers'] || {}
+        #   )
+        # )
         swagger_checker.response = response
         post_checks(swagger_checker)
 
